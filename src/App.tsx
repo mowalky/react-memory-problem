@@ -24,7 +24,13 @@ function App() {
         value: "dog",
       },
     ];
-    setCards([...defaultCards]);
+
+    // duplicate array & randomize array (not ideal)
+    const dupmemcards = [...defaultCards, ...defaultCards].sort(() =>
+      Math.random() > 0.5 ? 1 : -1
+    );
+
+    setCards([...dupmemcards]);
   };
 
   useEffect(() => {
@@ -34,7 +40,15 @@ function App() {
   return (
     <div className="App">
       {cards ? (
-        cards.map((card) => <div className="mem-card">{card.image}</div>)
+        cards.map((card) => (
+          <div
+            className="mem-card"
+            style={{
+              backgroundImage: `url(${card.image})`,
+              backgroundSize: "cover",
+            }}
+          ></div>
+        ))
       ) : (
         <div>no memory cards defined</div>
       )}
