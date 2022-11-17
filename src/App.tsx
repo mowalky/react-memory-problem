@@ -18,21 +18,24 @@ function App() {
     setFlipped([...flipped, cardIndex]);
   };
 
-  const checkGuess = (userGuess: string) => {
+  const checkGuess = (userGuess: string, cardIndex: number) => {
+    flipCard(cardIndex);
+
     if (guess == "") {
       setGuess(userGuess);
       return;
     }
 
     if (guess == userGuess && cards) {
-      alert("correct!");
       const guesses = cards.map((c) => ({ ...c, found: guess == c.value }));
       console.log(guesses);
       setCards(guesses);
+      console.log("correct!");
     } else {
-      alert("incorrect!");
+      console.log("incorrect!");
     }
     setGuess(""); // reset
+    //setFlipped([]);
   };
 
   const createMemoryCards = () => {
@@ -47,6 +50,12 @@ function App() {
         image:
           "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/golden-retriever-royalty-free-image-506756303-1560962726.jpg?crop=0.672xw:1.00xh;0.166xw,0&resize=640:*",
         value: "dog",
+        found: false,
+      },
+      {
+        image:
+          "https://thumbs.dreamstime.com/b/horse-herd-run-desert-sand-storm-against-dramatic-sky-60327349.jpg",
+        value: "horse",
         found: false,
       },
     ];
@@ -65,20 +74,19 @@ function App() {
 
   return (
     <div className="App">
-      <p>{guess}</p>
       {cards ? (
         cards.map((card, idx) => (
           <div
             key={idx}
-            onClick={() => checkGuess(card.value)}
+            onClick={() => checkGuess(card.value, idx)}
             className="mem-card"
             style={{
-              backgroundImage: `url(${card.found === true ? card.image : ""})`,
+              backgroundImage: `url(${
+                card.found === true || flipped.includes(idx) ? card.image : ""
+              })`,
               backgroundSize: "cover",
             }}
-          >
-            {JSON.stringify(card.found)}
-          </div>
+          ></div>
         ))
       ) : (
         <div>no memory cards defined</div>
