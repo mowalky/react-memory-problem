@@ -11,7 +11,12 @@ type MemCard = {
 function App() {
   // store memory cards
   const [cards, setCards] = useState<MemCard[] | null>();
+  const [flipped, setFlipped] = useState<number[]>([]);
   const [guess, setGuess] = useState("");
+
+  const flipCard = (cardIndex: number) => {
+    setFlipped([...flipped, cardIndex]);
+  };
 
   const checkGuess = (userGuess: string) => {
     if (guess == "") {
